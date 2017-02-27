@@ -16,7 +16,7 @@ public class Main {
         //String contextPath = "/Heroku3scale";
         
         Tomcat tomcat = new Tomcat();
-        tomcat.setPort(Integer.valueOf(port.orElse("8080") ));
+        tomcat.setPort(Integer.valueOf(port.orElse("80") ));
         
         // Define a web application context.
         Context context = tomcat.addWebapp("/Heroku3scale", new File(
