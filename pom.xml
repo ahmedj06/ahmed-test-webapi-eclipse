@@ -3,7 +3,10 @@
   <groupId>Heroku3scale</groupId>
   <artifactId>Heroku3scale</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <tomcat.version>7.0.57</tomcat.version>
+  </properties>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -23,27 +26,89 @@
           <target>1.7</target>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.3</version>
-        <configuration>
-          <warSourceDirectory>WebContent</warSourceDirectory>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
-      </plugin>
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-dependency-plugin</artifactId>
+		<version>3.0.0</version>
+		<executions>
+		 <execution>
+		  <id>copy-dependencies</id>
+		  <phase>package</phase>
+		  <goals>
+		   <goal>copy-dependencies</goal>
+		  </goals>
+		  <configuration>
+		   <outputdirectory>${project.build.directory}/lib</outputdirectory>
+		   <overwritereleases>true</overwritereleases>
+		   <overwritesnapshots>true</overwritesnapshots>
+		   <overwriteifnewer>true</overwriteifnewer>
+		  </configuration>
+		 </execution>
+		</executions>
+	  </plugin>
+	  <plugin>
+      <!-- Build an executable JAR -->
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-jar-plugin</artifactId>
+		  <version>3.0.2</version>
+		  <configuration>
+			<archive>
+			  <manifest>
+				<addClasspath>true</addClasspath>
+				<classpathPrefix>dependency/</classpathPrefix>
+				<mainClass>fr.bdss.jersey.main.Main</mainClass>
+			  </manifest>
+			</archive>
+		  </configuration>
+    </plugin>
     </plugins>
   </build>
   <dependencies>
-  	<dependency>
-  		<groupId>javax.servlet</groupId>
-  		<artifactId>javax.servlet-api</artifactId>
-  		<version>3.0.1</version>
-  		<scope>provided</scope>
-  	</dependency>
-  	<dependency>
-  		<groupId>javax.ws.rs</groupId>
-  		<artifactId>javax.ws.rs-api</artifactId>
-  		<version>2.0.1</version>
-  	</dependency>
-  </dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-catalina</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-core</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-logging-juli</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jasper</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jasper-el</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jsp-api</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+	</dependencies>
 </project>
